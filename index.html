@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seu Livro Está Pronto! 🌟</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --roxo: #6C4DFF;
+    --rosa: #FF8FCF;
+    --amarelo: #FFD84D;
+    --azul: #8ED8FF;
+    --verde: #5DDC8A;
+    --roxo-prof: #2E1B66;
+    --creme: #FFF8F0;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #0d0820;
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ===== FUNDO ESTRELADO ===== */
+  .stars-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: brilho var(--d, 3s) ease-in-out infinite alternate;
+  }
+  @keyframes brilho {
+    from { opacity: 0.1; transform: scale(0.8); }
+    to   { opacity: 0.9; transform: scale(1.2); }
+  }
+
+  /* gradiente de fundo */
+  .bg-gradient {
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(108,77,255,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(255,143,207,0.2) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(142,216,255,0.1) 0%, transparent 60%);
+    z-index: 0;
+  }
+
+  /* ===== LAYOUT ===== */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0;
+  }
+
+  /* ===== TOPO ===== */
+  .badge-topo {
+    background: rgba(93,220,138,0.15);
+    border: 1px solid rgba(93,220,138,0.4);
+    color: #5DDC8A;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 6px 18px;
+    border-radius: 50px;
+    letter-spacing: 0.5px;
+    margin-bottom: 32px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  /* ===== ESTRELA CENTRAL ===== */
+  .estrela-hero {
+    width: 120px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 30px rgba(255,216,77,0.6));
+    animation: aparecer 0.7s ease both 0.1s, flutuar 4s ease-in-out infinite 1s;
+  }
+  @keyframes flutuar {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-10px); }
+  }
+
+  /* ===== TÍTULO ===== */
+  .titulo-principal {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: white;
+    margin-bottom: 8px;
+    animation: fadeDown 0.6s ease both 0.2s;
+  }
+  .titulo-principal span {
+    background: linear-gradient(135deg, #FFD84D, #FF8FCF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitulo {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.7;
+    max-width: 500px;
+    margin-bottom: 40px;
+    animation: fadeDown 0.6s ease both 0.3s;
+  }
+
+  /* ===== CARD CENTRAL ===== */
+  .card-livro {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 28px;
+    padding: 40px 36px;
+    width: 100%;
+    backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
+    animation: aparecer 0.7s ease both 0.4s;
+    margin-bottom: 32px;
+  }
+  .card-livro::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--roxo), var(--rosa), var(--amarelo));
+  }
+  .card-livro::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(108,77,255,0.15), transparent 70%);
+    pointer-events: none;
+  }
+
+  .livro-img {
+    width: 200px;
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 60px rgba(108,77,255,0.3);
+    margin-bottom: 24px;
+    transition: transform 0.3s ease;
+  }
+  .livro-img:hover { transform: scale(1.03) rotate(-1deg); }
+
+  .card-titulo {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 6px;
+  }
+  .card-desc {
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  /* ===== RECURSOS ===== */
+  .recursos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 32px;
+    text-align: left;
+    position: relative;
+    z-index: 1;
+  }
+  .recurso {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+  }
+  .recurso:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+  .recurso .icone {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .recurso .texto {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.8);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  /* ===== BOTÃO CTA ===== */
+  .btn-acessar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: linear-gradient(135deg, var(--roxo), #9B7AFF);
+    color: white;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: 1.15rem;
+    padding: 18px 32px;
+    border-radius: 18px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 30px rgba(108,77,255,0.5);
+    border: none;
+    cursor: pointer;
+  }
+  .btn-acessar:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 40px rgba(108,77,255,0.7);
+    background: linear-gradient(135deg, #7B5EFF, #AE8FFF);
+  }
+  .btn-acessar .seta {
+    font-size: 1.3rem;
+    transition: transform 0.3s;
+  }
+  .btn-acessar:hover .seta { transform: translateX(4px); }
+
+  .btn-hint {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== SEPARADOR ===== */
+  .separador {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin: 8px 0 24px;
+    animation: aparecer 0.6s ease both 0.6s;
+  }
+  .separador::before,
+  .separador::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+  .separador span {
+    color: rgba(255,255,255,0.3);
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+
+  /* ===== FEATURES ===== */
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    width: 100%;
+    animation: aparecer 0.6s ease both 0.7s;
+    margin-bottom: 40px;
+  }
+  .feature {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 20px 14px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .feature:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-3px);
+  }
+  .feature .emoji { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+  .feature .label {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.3;
+  }
+
+  /* ===== TESTEMUNHO ===== */
+  .testemunho {
+    background: rgba(255,216,77,0.08);
+    border: 1px solid rgba(255,216,77,0.2);
+    border-radius: 20px;
+    padding: 28px 32px;
+    width: 100%;
+    animation: aparecer 0.6s ease both 0.8s;
+    margin-bottom: 40px;
+    text-align: left;
+  }
+  .testemunho .aspas {
+    font-size: 3rem;
+    line-height: 0.5;
+    color: var(--amarelo);
+    opacity: 0.4;
+    font-family: Georgia, serif;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .testemunho p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.75;
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+  .testemunho .autor {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--roxo), var(--rosa));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .autor-info .nome {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: white;
+  }
+  .autor-info .detalhe {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* ===== RODAPÉ ===== */
+  .rodape {
+    animation: aparecer 0.6s ease both 1s;
+    text-align: center;
+    width: 100%;
+  }
+  .rodape .branding {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.2);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+  .rodape .branding span { color: rgba(255,255,255,0.4); }
+  .rodape .love {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.15);
+  }
+
+  /* ===== CONFETTI ON LOAD ===== */
+  .confetti-piece {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 999;
+    animation: cair var(--dur) ease-in var(--delay) both;
+  }
+  @keyframes cair {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ===== ANIMAÇÕES GERAIS ===== */
+  @keyframes aparecer {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== PULSE NO BOTÃO ===== */
+  @keyframes pulse-ring {
+    0%   { box-shadow: 0 0 0 0 rgba(108,77,255,0.6); }
+    70%  { box-shadow: 0 0 0 16px rgba(108,77,255,0); }
+    100% { box-shadow: 0 0 0 0 rgba(108,77,255,0); }
+  }
+  .btn-acessar { animation: pulse-ring 2.5s ease-out infinite 1.5s; }
+
+  @media (max-width: 480px) {
+    .recursos { grid-template-columns: 1fr; }
+    .features { grid-template-columns: 1fr 1fr; }
+    .card-livro { padding: 28px 20px; }
+    .testemunho { padding: 22px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- FUNDO -->
+<div class="bg-gradient"></div>
+<div class="stars-bg" id="stars"></div>
+
+<!-- CONFETTI -->
+<div id="confetti-container"></div>
+
+<div class="container">
+
+  <!-- BADGE TOPO -->
+  <div class="badge-topo">✅ Compra confirmada com sucesso!</div>
+
+  <!-- ESTRELA -->
+  <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Star/3D/star_3d.png"
+       onerror="this.style.fontSize='80px';this.style.lineHeight='1';this.outerHTML='<div style=font-size:80px;margin-bottom:20px;animation:flutuar 4s ease-in-out infinite>⭐</div>'"
+       class="estrela-hero" alt="estrela"/>
+
+  <!-- TÍTULO -->
+  <h1 class="titulo-principal">
+    Seu livro está<br><span>pronto para começar!</span>
+  </h1>
+  <p class="subtitulo">
+    Obrigado pela sua compra! Clique no botão abaixo para acessar o <strong>Livro Digital Interativo</strong> e começar a jornada de oração em família hoje mesmo. 💜
+  </p>
+
+  <!-- CARD PRINCIPAL -->
+  <div class="card-livro">
+
+    <img src="https://oracao-em-familia.vercel.app/favicon.ico"
+         onerror="this.outerHTML='<div style=font-size:80px;margin-bottom:24px>📖</div>'"
+         class="livro-img" alt="Capa do livro"/>
+
+    <div class="card-titulo">Meu Primeiro Caminho de Oração em Família</div>
+    <div class="card-desc">Guia prático e amoroso para pais, mães e responsáveis que desejam criar uma rotina de oração com seus filhos.</div>
+
+    <!-- RECURSOS -->
+    <div class="recursos">
+      <div class="recurso"><span class="icone">🙏</span><span class="texto">40+ orações clicáveis prontas</span></div>
+      <div class="recurso"><span class="icone">🎯</span><span class="texto">Quiz interativo com estatísticas</span></div>
+      <div class="recurso"><span class="icone">✏️</span><span class="texto">Grifos e resumo automático</span></div>
+      <div class="recurso"><span class="icone">🎵</span><span class="texto">Áudio narrado (voz real)</span></div>
+      <div class="recurso"><span class="icone">🧠</span><span class="texto">Mapa mental interativo</span></div>
+      <div class="recurso"><span class="icone">🎨</span><span class="texto">Atividades para 3-12 anos</span></div>
+    </div>
+
+    <!-- BOTÃO -->
+    <a href="https://oracao-em-familia.vercel.app/" target="_blank" class="btn-acessar">
+      ✨ Acessar meu livro agora <span class="seta">→</span>
+    </a>
+    <p class="btn-hint">🔒 Acesso imediato · Funciona no celular e computador · Chrome recomendado</p>
+
+  </div>
+
+  <!-- SEPARADOR -->
+  <div class="separador"><span>o que você vai encontrar</span></div>
+
+  <!-- FEATURES -->
+  <div class="features">
+    <div class="feature">
+      <span class="emoji">📖</span>
+      <div class="label">30 páginas interativas</div>
+    </div>
+    <div class="feature">
+      <span class="emoji">⭐</span>
+      <div class="label">Para crianças de 3 a 12 anos</div>
+    </div>
+    <div class="feature">
+      <span class="emoji">🗓️</span>
+      <div class="label">Plano de 7 dias prático</div>
+    </div>
+    <div class="feature">
+      <span class="emoji">💜</span>
+      <div class="label">Roteiros de 5 e 10 minutos</div>
+    </div>
+    <div class="feature">
+      <span class="emoji">📓</span>
+      <div class="label">Diário de oração infantil</div>
+    </div>
+    <div class="feature">
+      <span class="emoji">🌟</span>
+      <div class="label">Atividades lúdicas e criativas</div>
+    </div>
+  </div>
+
+  <!-- TESTEMUNHO -->
+  <div class="testemunho">
+    <span class="aspas">"</span>
+    <p>Nunca achei que conseguiria criar esse hábito com minha filha de 5 anos. Depois de uma semana usando o guia, ela mesma me pediu para orar antes de dormir. Chorei de emoção. Esse livro mudou a nossa rotina.</p>
+    <div class="autor">
+      <div class="avatar">👩</div>
+      <div class="autor-info">
+        <div class="nome">Camila R.</div>
+        <div class="detalhe">Mãe de 2 filhos · São Paulo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ -->
+  <div class="rodape">
+    <div class="branding">✦ <span>IA.ndrea Studio</span> ✦</div>
+    <div class="love">Feito com amor para famílias cristãs 💜</div>
+  </div>
+
+</div>
+
+<script>
+// ===== ESTRELAS NO FUNDO =====
+const starsContainer = document.getElementById('stars');
+for (let i = 0; i < 80; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 3 + 1;
+  s.style.cssText = `
+    width:${size}px;height:${size}px;
+    top:${Math.random()*100}%;left:${Math.random()*100}%;
+    --d:${2 + Math.random()*4}s;
+    animation-delay:${Math.random()*4}s;
+  `;
+  starsContainer.appendChild(s);
+}
+
+// ===== CONFETTI =====
+const colors = ['#FFD84D','#FF8FCF','#6C4DFF','#8ED8FF','#5DDC8A','#FF9D5C'];
+const container = document.getElementById('confetti-container');
+for (let i = 0; i < 60; i++) {
+  const c = document.createElement('div');
+  c.className = 'confetti-piece';
+  c.style.cssText = `
+    left:${Math.random()*100}vw;
+    background:${colors[Math.floor(Math.random()*colors.length)]};
+    --dur:${1.5 + Math.random()*2}s;
+    --delay:${Math.random()*1.5}s;
+    width:${6 + Math.random()*8}px;
+    height:${6 + Math.random()*8}px;
+    border-radius:${Math.random() > 0.5 ? '50%' : '2px'};
+  `;
+  container.appendChild(c);
+}
+setTimeout(() => { container.innerHTML = ''; }, 4000);
+</script>
+</body>
+</html>
